@@ -4,6 +4,11 @@
     cd ...
     source study_backup.sql;
 ```
+终端运行
+```
+    npm install
+```
+直接跑app.js
 ## 🛠️ Admin 模块接口文档
 
 ### 1. 测试环境准备
