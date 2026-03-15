@@ -1,29 +1,33 @@
 {
-  "name": "backend",
+  "name": "studyBackend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "axios": "^1.10.0",
     "bull": "^4.16.5",
     "cors": "^2.8.5",
     "dotenv": "^17.1.0",
     "ejs": "^3.1.10",
-    "express": "^5.1.0", 
+    "express": "^4.18.2",
     "express-rate-limit": "^7.5.1",
     "mysql2": "^3.14.1",
     "nodemailer": "^7.0.5",
     "redis": "^5.5.6",
     "sequelize": "^6.37.7",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^1.1.1",
+    "crypto-js": "^4.2.0",
+    "morgan": "^1.10.0",
+    "adm-zip": "^0.5.10" 
   },
   "devDependencies": {
-    "@express-rate-limit/tsconfig": "^1.0.2"
+    "@express-rate-limit/tsconfig": "^1.0.2",
+    "nodemon": "^3.1.0"
   }
 }
