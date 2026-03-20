@@ -1,0 +1,42 @@
+[2026-03-19T05:12:59.990Z] GET / 200 10.908 ms - 137
+
+[2026-03-19T05:13:00.106Z] GET /favicon.ico 404 1.721 ms - 97
+
+[2026-03-19T05:37:44.824Z] GET / 200 6.337 ms - 137
+
+[2026-03-19T05:37:44.960Z] GET /favicon.ico 404 1.972 ms - 97
+
+[2026-03-19T05:44:55.616Z] GET / 200 6.231 ms - 137
+
+[2026-03-19T05:45:21.450Z] POST /api/v1/simple_admin/register 404 1.209 ms - 115
+
+[2026-03-19T05:45:49.453Z] POST /api/v1/simple_admin/register 404 448.556 ms - 115
+
+[2026-03-19T05:50:41.132Z] POST /api/v1/simple_admin/register 200 52.254 ms - 91
+
+[2026-03-19T05:51:43.079Z] POST /api/v1/simple_admin/login 200 13.017 ms - 120
+
+[2026-03-19T05:51:58.451Z] POST /api/v1/simple_admin/login 401 2.540 ms - 58
+
+[2026-03-19T05:53:43.758Z] POST /api/resource/upload 200 74.970 ms - 361
+
+[2026-03-19T05:54:44.357Z] POST /api/privacy/recognize 200 21.428 ms - 207
+
+[2026-03-19T05:55:45.567Z] POST /api/privacy/classify 200 15.058 ms - 175
+
+[2026-03-19T05:58:38.196Z] POST /api/privacy/classify 200 1.053 ms - 94
+
+[2026-03-19T05:58:54.272Z] POST /api/privacy/recognize 200 15.831 ms - 207
+
+[2026-03-19T05:59:33.555Z] POST /api/privacy/classify 200 7.879 ms - 175
+
+[2026-03-19T06:00:47.892Z] GET /api/resource/info?userId=test001&resourceId=e5a97a46a3bd49a99fc377e86439c5f4 200 10.957 ms - 394
+
+[2026-03-19T06:01:39.810Z] DELETE /api/resource/delete?userId=test001&resourceId=e5a97a46a3bd49a99fc377e86439c5f4 400 17.468 ms - 84
+
+[2026-03-19T06:02:04.531Z] DELETE /api/resource/delete?userId=test001&resourceId=e5a97a46a3bd49a99fc377e86439c5f4 400 7.692 ms - 84
+
+[2026-03-19T06:03:00.635Z] DELETE /api/resource/delete?userId=test001&resourceId=e5a97a46a3bd49a99fc377e86439c5f4 200 15.006 ms - 92
+
+[2026-03-19T06:05:37.417Z] POST /api/resource/upload/batch 200 184.776 ms - 230
+

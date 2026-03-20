@@ -1,0 +1,22 @@
+2026-03-19T06:01:39.804Z | [错误] Unexpected token / in JSON at position 80 | SyntaxError: Unexpected token / in JSON at position 80
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\24534\Desktop\studyBackend\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\Users\24534\Desktop\studyBackend\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:203:9)
+    at invokeCallback (C:\Users\24534\Desktop\studyBackend\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\24534\Desktop\studyBackend\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\24534\Desktop\studyBackend\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1358:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21)
+2026-03-19T06:02:04.525Z | [错误] Unexpected string in JSON at position 80 | SyntaxError: Unexpected string in JSON at position 80
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\24534\Desktop\studyBackend\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\Users\24534\Desktop\studyBackend\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:203:9)
+    at invokeCallback (C:\Users\24534\Desktop\studyBackend\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\24534\Desktop\studyBackend\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\24534\Desktop\studyBackend\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1358:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21)
