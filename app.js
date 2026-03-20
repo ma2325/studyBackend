@@ -157,6 +157,8 @@ try {
     res.status(500).json({ code: 500, msg: "隐私路由加载失败", success: false });
   });
 }
+app.use("/admin",require("./router/adminRouter"));
+app.use("/material",require("./router/materialRouter"))
 
 // 4. 第三方资源路由
 try {

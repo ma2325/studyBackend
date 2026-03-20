@@ -1,2 +1,11 @@
 /.idea
-/node_modules
+node_modules/
+
+# 忽略本地运行数据和缓存
+data/
+.env
+*.log
+
+# 忽略 HBuilder/编译生成的临时文件
+unpackage/
+dist/
