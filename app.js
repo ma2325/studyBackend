@@ -171,6 +171,16 @@ try {
   });
 }
 
+try {
+  app.use("/api/feynman", require("./router/feynmanRouter"));
+  console.log("✅ 已挂载/api/feynman路由");
+} catch (err) {
+  console.error("❌ /api/feynman路由加载失败：", err.message);
+  app.use("/api/feynman", (req, res) => {
+    res.status(500).json({ code: 500, msg: "费曼学习路由加载失败", success: false });
+  });
+}
+
 /* 🌟 新增：根路径健康检查接口（测试服务是否启动） */
 app.get("/", (req, res) => {
   res.json({
