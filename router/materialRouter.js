@@ -56,16 +56,13 @@ let rawContent = aiRes.data.choices[0].message.content;
 let keywords = "";
 
 if (rawContent.includes("</think>")) {
-    // 这种方法最保险：分割字符串，取最后一部分
     const parts = rawContent.split("</think>");
     keywords = parts[parts.length - 1].trim();
 } else {
     keywords = rawContent.trim();
 }
-    // 2. 将提炼后的知识点向量化
     const queryVector = await getEmbedding(keywords);
 
-    // 3. 数据库检索
     const dbPath = path.join(__dirname, '../data/sample-lancedb');
     const db = await lancedb.connect(dbPath);
     const table = await db.openTable("course_materials");
@@ -77,7 +74,6 @@ if (rawContent.includes("</think>")) {
 
     const rawResults = await queryChain.toArray();
 
-    // 4. 结果聚合 (按文件名分组，保留你原来的 summary 逻辑)
     const summary = {};
     rawResults.forEach(item => {
         if (!summary[item.file_name]) {
