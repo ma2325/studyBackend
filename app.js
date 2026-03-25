@@ -20,6 +20,8 @@ const cors = require('cors');
 const morgan = require('morgan'); 
 // 🌟 新增：引入文件操作工具（后续路由/控制器会用到）
 const fs = require('fs');
+const noteRouter = require('./router/noteRouter');
+app.use('/api/notes', noteRouter);
 
 // 🌟 新增：提前创建必要的本地存储目录（避免运行时报错）
 const createStorageDirs = () => {
@@ -28,7 +30,8 @@ const createStorageDirs = () => {
     path.join(__dirname, 'storage/original'), // 原始文件存储
     path.join(__dirname, 'storage/index'), // 索引文件存储
     path.join(__dirname, 'storage/logs'), // 日志目录
-    path.join(__dirname, 'storage/sync') // 同步记录目录
+    path.join(__dirname, 'storage/sync'), // 同步记录目录
+    path.join(__dirname, 'storage/notes') //手写笔记存储
   ];
   dirs.forEach(dir => {
     if (!fs.existsSync(dir)) {

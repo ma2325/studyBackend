@@ -162,6 +162,22 @@ CREATE TABLE IF NOT EXISTS `third_party_file` (
 -- 正在导出表  study_backend.third_party_file 的数据：~0 rows (大约)
 DELETE FROM `third_party_file`;
 
+-- 导出  表 study_backend.notes 结构
+CREATE TABLE `notes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `note_id` varchar(32) NOT NULL COMMENT '业务唯一ID',
+  `user_id` varchar(50) NOT NULL COMMENT '关联admin表的account',
+  `file_name` varchar(255) DEFAULT NULL,
+  `content` longtext,
+  `status` tinyint DEFAULT '0' COMMENT '0:处理中, 1:成功, 2:失败',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `note_id` (`note_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DELETE FROM `notes`;
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
