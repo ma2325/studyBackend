@@ -6,6 +6,20 @@ const fs = require('fs');
 const crypto = require('crypto');
 // 引入数据库工具（核心：替换模拟逻辑）
 const { db, genid } = require("../db/dbUtils");
+/**
+ * 分页 SQL 包装工具
+ * @param {string} sql 原始 SQL
+ * @param {number} page 当前页
+ * @param {number} pageSize 每页大小
+ * @returns {string} 拼接了 LIMIT 的 SQL
+ */
+const wrapPaginationSql = (sql, page, pageSize) => {
+    const p = Math.max(1, parseInt(page) || 1);
+    const s = Math.max(1, parseInt(pageSize) || 10);
+    const offset = (p - 1) * s;
+    // 强制转换为数字字符串，确保安全
+    return `${sql} LIMIT ${Number(s)} OFFSET ${Number(offset)}`;
+};
 
 /**
  * 真实文件上传中间件（保留原有逻辑，优化路径）
@@ -49,6 +63,8 @@ const responseUtil = {
 const resourceController = {
   // 单文件上传（写入数据库）
   uploadAndParseResource: async (req, res, next) => {
+    console.log("收到请求 Body:", req.body);
+    console.log("收到文件 File:", req.file);
     try {
       const { userId, userPrivacyMark } = req.body;
       const file = req.file;
@@ -280,12 +296,91 @@ const resourceController = {
       console.error("删除资源失败：", err);
       next(err);
     }
+  },
+  
+  /**
+   * 获取用户资源列表接口
+   * 支持分页、类型过滤、关键词搜索
+   */
+  getResourceList: async (req, res, next) => {
+    try {
+      const { userId, page = 1, pageSize = 10, fileType, keyword } = req.query;
+
+      if (!userId) {
+        return res.json(responseUtil.error('userId不能为空', 400));
+      }
+
+      const currentPage = parseInt(page);
+      const size = parseInt(pageSize);
+      const offset = (currentPage - 1) * size;
+
+      // 1. 构建查询条件 (适配现有的软删除 is_delete)
+      let whereSql = "WHERE user_id = ? AND is_delete = 0";
+      let params = [userId];
+
+      // 类型过滤 (ppt, video, audio, note, pdf)
+      if (fileType) {
+        whereSql += " AND file_type = ?";
+        params.push(fileType);
+      }
+
+      // 关键词搜索 (模糊匹配文件名)
+      if (keyword) {
+        whereSql += " AND file_name LIKE ?";
+        params.push(`%${keyword}%`);
+      }
+
+      // 2. 查询总记录数 (用于分页计算)
+      const countSql = `SELECT COUNT(*) as total FROM resource ${whereSql}`;
+      const countRes = await db.execute(countSql, params);
+      const total = countRes[0].total;
+
+      // 3. 查询分页数据 (适配 README 定义的返回字段)
+      const baseListSql = `
+        SELECT 
+          resource_id as resourceId, 
+          file_name as title, 
+          file_type as type, 
+          file_size as fileSize, 
+          create_time as createTime
+        FROM resource 
+        ${whereSql}
+        ORDER BY create_time DESC
+      `;
+      console.log("SQL参数检查:", [...params, size, offset]);
+      console.log('分页参数:', { size, offset, params });
+
+      // 4. 使用工具函数拼接分页 (解决占位符失效问题)
+      const listSql = wrapPaginationSql(baseListSql, page, pageSize);
+
+      // 【关键】此时 SQL 里的 ? 只有 whereSql 里的那些，所以只传 params
+      const list = await db.execute(listSql, params);
+
+      // 4. 封装返回结果
+      return res.json(responseUtil.success({
+        total: total,
+        pages: Math.ceil(total / size),
+        list: list.map(item => ({
+          resourceId: item.resourceId,
+          title: item.title,
+          type: item.type === 'pptx' ? 'ppt' : item.type, // 兼容性转换
+          coverUrl: null, // 预留封面图字段
+          fileSize: (item.fileSize / 1024 / 1024).toFixed(2) + 'MB', // 格式化大小
+          createTime: item.createTime ? item.createTime.toISOString() : null
+        }))
+      }, "查询成功"));
+
+    } catch (err) {
+      console.error("获取资源列表失败：", err);
+      next(err);
+    }
   }
 };
 
 // 挂载路由
 router.post('/upload', resourceAuth, singleUpload, resourceController.uploadAndParseResource);
 router.post('/upload/batch', resourceAuth, multiUpload, resourceController.batchUploadAndParse);
+router.get('/list', resourceAuth, resourceController.getResourceList);
 router.get('/info', resourceAuth, resourceController.getResourceInfo);
 router.get('/index', resourceAuth, resourceController.getResourceIndex);
 router.delete('/delete', resourceAuth, resourceController.deleteResource);

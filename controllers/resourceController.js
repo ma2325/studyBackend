@@ -315,5 +315,6 @@ module.exports = {
   batchUploadAndParseResource,
   getResourceInfo,
   getResourceIndex,
-  deleteResource
+  deleteResource,
+  getResourceList
 };
