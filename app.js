@@ -184,6 +184,23 @@ try {
   });
 }
 
+// 5. 复习计划路由（自包含实现）
+// 对外统一前缀：/api/planning/**
+// 主要接口示例：
+// - POST /api/planning/generate
+// - POST /api/planning/tasks/complete
+// - PUT  /api/planning/tasks/:taskId
+// - GET  /api/planning/docs
+try {
+  app.use("/api/planning", require("./router/planningProxyRouter"));
+  console.log("✅ 已挂载/api/planning路由");
+} catch (err) {
+  console.error("❌ /api/planning路由加载失败：", err.message);
+  app.use("/api/planning", (req, res) => {
+    res.status(500).json({ code: 500, msg: "复习计划路由加载失败", success: false });
+  });
+}
+
 /* 🌟 新增：根路径健康检查接口（测试服务是否启动） */
 app.get("/", (req, res) => {
   res.json({
