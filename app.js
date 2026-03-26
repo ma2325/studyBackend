@@ -161,7 +161,7 @@ try {
   });
 }
 app.use("/admin",require("./router/adminRouter"));
-app.use("/material",require("./router/materialRouter"))
+//app.use("/material",require("./router/materialRouter"))
 
 // 4. 第三方资源路由
 try {
