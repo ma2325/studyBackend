@@ -152,21 +152,26 @@ CREATE TABLE IF NOT EXISTS `material_chunk` (
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='课件文本切片详情表';
 
 -- ==============================================================================
--- 5. 敏感信息识别记录表
+-- 4. PII(个人敏感信息)检测记录表
 -- ==============================================================================
 DROP TABLE IF EXISTS `pii_record`;
 CREATE TABLE IF NOT EXISTS `pii_record` (
-                                            `id` int NOT NULL AUTO_INCREMENT,
-                                            `resource_id` varchar(32) NOT NULL,
-    `user_id` varchar(50) NOT NULL,
-    `pii_type` varchar(20) NOT NULL,
-    `pii_value` varchar(255) NOT NULL,
-    `position` varchar(100) DEFAULT '',
-    `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                                            `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                            `resource_id` varchar(64) NOT NULL COMMENT '资源ID',
+    `user_id` varchar(64) NOT NULL COMMENT '用户ID',
+    `content` text NOT NULL COMMENT '检测的文本内容',
+    `has_pii` tinyint NOT NULL DEFAULT '0' COMMENT '是否包含敏感信息(0:否, 1:是)',
+    `pii_list` json DEFAULT NULL COMMENT '提取出的敏感信息列表',
+    `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
     KEY `idx_resource_id` (`resource_id`),
     KEY `idx_user_id` (`user_id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='敏感信息识别记录表';
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='PII敏感信息检测记录表';
+
+DELETE FROM `feynman_record`;
+INSERT INTO study_backend.pii_record (id, resource_id, user_id, content, has_pii, pii_list, create_time, update_time) VALUES (1, 'eb7a7af604054c42ac80588771881152', 'test001', '我的手机号是 13800138000，邮箱是 test@xxx.com', 1, '[{"type": "phone", "values": ["13800138000"]}, {"type": "email", "values": ["test@xxx.com"]}]', '2026-03-26 10:46:23', '2026-03-26 10:46:23');
+
 
 -- ==============================================================================
 -- 6. 资源表
