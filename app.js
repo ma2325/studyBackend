@@ -161,8 +161,8 @@ try {
   });
 }
 app.use("/admin",require("./router/adminRouter"));
-//app.use("/material",require("./router/materialRouter"))
-
+const { materialRouter } = require('./router/materialRouter'); 
+app.use('/api/material', materialRouter);
 // 4. 第三方资源路由
 try {
   app.use("/api/third-party", require("./router/thirdPartyRouter"));

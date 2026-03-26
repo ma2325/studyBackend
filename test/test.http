@@ -1,5 +1,5 @@
 
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:3000/api
 
 ### 1. 上传测试
 POST {{baseUrl}}/material/upload
@@ -28,7 +28,7 @@ GET {{baseUrl}}/material/search?queryText=什么是递归算法的执行效率
 
 ### OCR测试
 ### 3. 识图搜题测试 (OCR + 语义搜索)
-# 注意：确保当前目录下有一个名为 question.jpg 的真实图片
+# 注意：确保当前目录下有一个名为test.jpg 的真实图片
 POST {{baseUrl}}/material/ocr-search
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 

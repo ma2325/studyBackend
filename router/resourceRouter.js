@@ -4,8 +4,11 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const lancedb = require('@lancedb/lancedb');
+const PDFParser = require("pdf2json");
 // 引入数据库工具（核心：替换模拟逻辑）
 const { db, genid } = require("../db/dbUtils");
+const { processPdfVectorization } = require('./materialRouter');
 /**
  * 分页 SQL 包装工具
  * @param {string} sql 原始 SQL
@@ -103,7 +106,11 @@ const resourceController = {
         file.path // 本地存储路径
       ];
       await db.execute(insertSql, insertParams);
-
+      if (fileType === 'pdf') {
+    const subject = req.body.subject || "未分类";
+    // 异步执行，不阻塞接口返回
+    processPdfVectorization(file.path, file.originalname, subject, resourceId);
+}
       // 5. 返回结果（保持原有格式）
       const result = {
         resourceId,
@@ -121,37 +128,45 @@ const resourceController = {
   },
 
   // 批量上传（写入数据库）
-  batchUploadAndParse: async (req, res, next) => {
+batchUploadAndParse: async (req, res, next) => {
     try {
       const { userId } = req.body;
       const files = req.files;
+      const subject = req.body.subject || "未分类"; // 建议提到循环外获取一次即可
       
       // 参数校验
       if (!userId || !files || files.length === 0) {
         return res.json(responseUtil.error('缺少参数：userId/resourceFiles', 400));
       }
 
-      // 批量插入数据库
       const results = [];
+      
+      // 遍历处理每一个上传的文件
       for (const file of files) {
         try {
-          // 生成唯一ID
+          // 1. 生成信息
           const resourceId = genid();
-          // 文件信息
           const fileExt = file.originalname.split('.').pop().toLowerCase();
           const fileType = ['pdf', 'pptx', 'ppt'].includes(fileExt) ? fileExt : 'other';
-          // MD5哈希
+          
+          // 2. 计算 MD5
+          const fileBuffer = fs.readFileSync(file.path);
           const md5Hash = crypto.createHash('md5');
-          md5Hash.update(fs.readFileSync(file.path));
+          md5Hash.update(fileBuffer);
           const fileHash = md5Hash.digest('hex');
 
-          // 插入数据库
+          // 3. 定义插入 SQL
           const insertSql = `
             INSERT INTO resource (
               resource_id, user_id, file_name, file_type, file_size, 
               file_hash, privacy_level, parse_status, storage_path
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
           `;
+
+          // 确定初始解析状态：PDF 设为 0 (解析中)，其他设为 1 (成功)
+          const initialStatus = (fileType === 'pdf') ? 0 : 1;
+
+          // 4. 写入数据库
           await db.execute(insertSql, [
             resourceId,
             userId,
@@ -159,23 +174,33 @@ const resourceController = {
             fileType,
             file.size,
             fileHash,
-            0, // 默认通用等级
-            1,
+            0, // 默认隐私等级
+            initialStatus,
             file.path
           ]);
 
-          // 收集结果
+          // 🌟 5. 关键逻辑：如果是 PDF，立即触发异步向量化解析
+          if (fileType === 'pdf') {
+            console.log(`[批量上传] 检测到 PDF，开始后台解析: ${file.originalname}`);
+            // 注意：不加 await，让它异步跑
+            processPdfVectorization(file.path, file.originalname, subject, resourceId);
+          }
+
+          // 收集成功结果
           results.push({
             fileName: file.originalname,
             resourceId,
-            success: true
+            success: true,
+            status: fileType === 'pdf' ? 'parsing' : 'completed'
           });
-        } catch (err) {
+
+        } catch (innerErr) {
+          console.error(`文件 ${file.originalname} 处理失败:`, innerErr);
           results.push({
             fileName: file.originalname,
             resourceId: '',
             success: false,
-            error: err.message
+            error: innerErr.message
           });
         }
       }
@@ -188,7 +213,7 @@ const resourceController = {
       }));
 
     } catch (err) {
-      console.error("批量上传失败：", err);
+      console.error("批量上传接口崩溃：", err);
       next(err);
     }
   },
