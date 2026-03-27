@@ -95,7 +95,7 @@ async function performSearch(queryText, subject) {
         ]
     }, {
         headers: { 'Authorization': `Bearer ${SILICON_FLOW_API_KEY}` },
-        timeout: 15000 // 🌟 15秒超时
+        timeout: 100000 // 🌟 15秒超时
     });
 
    // 修改 performSearch 中的 keywords 处理逻辑

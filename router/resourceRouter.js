@@ -247,6 +247,7 @@ batchUploadAndParse: async (req, res, next) => {
         userId: resource.user_id,
         fileName: resource.file_name,
         fileType: resource.file_type === 'pptx' ? 'ppt' : resource.file_type,
+        storage_path:resource.storage_path,
         privacyLevel: resource.privacy_level,
         createTime: resource.create_time.toISOString()
       };
