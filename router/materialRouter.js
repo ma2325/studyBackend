@@ -248,7 +248,7 @@ router.post('/ocr-search', upload.single('image'), async (req, res) => {
             }]
         }, { 
             headers: { 'Authorization': `Bearer ${SILICON_FLOW_API_KEY}` },
-            timeout: 20000 // 🌟 OCR 给 20 秒
+            timeout: 100000 // 🌟 OCR 给 20 秒
         });
         console.timeEnd("⏱️ OCR识别耗时");
 
