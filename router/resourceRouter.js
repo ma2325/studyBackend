@@ -230,7 +230,7 @@ batchUploadAndParse: async (req, res, next) => {
 
       // 从数据库查询资源
       const querySql = `
-        SELECT resource_id, user_id, file_name, file_type, privacy_level, create_time 
+        SELECT resource_id, user_id, file_name, file_type, storage_path, privacy_level, create_time 
         FROM resource 
         WHERE resource_id = ? AND user_id = ? AND is_delete = 0
       `;
