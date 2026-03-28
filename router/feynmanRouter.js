@@ -50,7 +50,7 @@ router.post('/generate-question', async (req, res) => {
 
         // 如果传了 resourceId，查一下资源基本信息，让 AI 知道背景
         if (resourceId) {
-            const resInfo = await db.getOne(`SELECT file_name, file_type FROM resource WHERE resource_id = ?`, [resourceId]);
+            const resInfo = await db.getOne(`SELECT file_name FROM resource WHERE resource_id = ?`, [resourceId]);
             if (resInfo) {
                 contextPrompt = `\n请结合相关课件材料（${resInfo.file_name}）的背景来提问，使其更符合当前学习上下文。`;
             }
@@ -121,7 +121,10 @@ router.post('/evaluate', async (req, res) => {
                             .limit(3)
                             .toArray();
 
-                        groundTruthContext = rawResults.map(item => item.text).join("\n...\n");
+                        // 读取 text 字段，并拼接你在 upload 内存入的 page_num
+                        groundTruthContext = rawResults.map(item =>
+                            `[摘自《${item.file_name}》 第 ${item.page_num} 页]：\n${item.text}`
+                        ).join("\n\n");
                     }
                 } catch (e) {
                     console.warn("向量库检索参考资料失败，降级为无参考评估:", e.message);
@@ -133,7 +136,7 @@ router.post('/evaluate', async (req, res) => {
         let prompt = `你是一个严谨的阅卷老师。正在使用费曼学习法评估学生的回答。\n知识点：${record.knowledge_point}\n原问题：${record.question_text}\n学生回答：${userAnswer}\n`;
 
         if (groundTruthContext) {
-            prompt += `\n【重要：标准参考资料】：\n${groundTruthContext}\n\n请**必须参考**上述资料的内容来评估学生的回答是否准确、有无遗漏资料中的关键点。\n`;
+            prompt += `\n【重要：标准参考资料】：\n${groundTruthContext}\n\n【硬性要求】：你**必须参考**上述资料的内容来评估。如果指出学生的遗漏或错误，**必须强制**从参考资料的[摘自《xxx》第 X 页]标记中提取出页码，并在 JSON 的 suggestion 或反馈中明确标出！\n`;
         }
 
         prompt += `
@@ -141,9 +144,21 @@ router.post('/evaluate', async (req, res) => {
 {
   "score": 75,
   "covered": ["已覆盖的知识点1"],
-  "missing": [{"point": "缺失的知识点简述", "suggestion": "补充建议"}],
-  "logic_flaws": [{"flaw": "逻辑断层简述", "suggestion": "补充建议"}],
-  "feedback": "一句话整体评价"
+  "missing": [
+    {
+      "point": "缺失的知识点简述", 
+      "suggestion": "补充建议",
+      "reference_page": "例如：第4页（若资料中未提及则填无）"
+    }
+  ],
+  "logic_flaws": [
+    {
+      "flaw": "逻辑断层简述", 
+      "suggestion": "补充建议",
+      "reference_page": "例如：第4页（若资料中未提及则填无）"
+    }
+  ],
+  "feedback": "一句话整体评价，若参考了资料，请在句末附上如(参考课件第X页)"
 }`;
 
         const aiRes = await axios.post('https://api.siliconflow.cn/v1/chat/completions', {

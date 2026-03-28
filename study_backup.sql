@@ -84,6 +84,97 @@ CREATE TABLE IF NOT EXISTS `feynman_record` (
 -- 正在导出表  study_backend.feynman_record 的数据：~1 rows (大约)
 DELETE FROM `feynman_record`;
 
+INSERT INTO study_backend.feynman_record (id, record_id, user_id, resource_id, knowledge_point, question_text, hints, user_answer, reference_context, score, covered_points, missing_points, logic_flaws, feedback, status, create_time, update_time) VALUES (6, 'b47086c4917b4e5cb0cf9f1e27e76ccd', 'test001', '7861db0d32bf4b59a8ce4e4f04a1a7a3', '完全二叉树', '请根据完全二叉树的定义，判断以下给出的二叉树是否为完全二叉树，并说明理由。', '["回忆完全二叉树的定义：除了最后一层外，其他各层的结点都达到最大，且最后一层的结点都连续地排在左边。", "分析给定二叉树的最后一层节点是否连续靠左，并检查其他层是否已满。"]', null, null, 0, null, null, null, null, 0, '2026-03-28 18:47:13', '2026-03-28 18:47:13');
+INSERT INTO study_backend.feynman_record (id, record_id, user_id, resource_id, knowledge_point, question_text, hints, user_answer, reference_context, score, covered_points, missing_points, logic_flaws, feedback, status, create_time, update_time) VALUES (7, 'd1d20ac75dc4466281b97a5ac89b8adb', 'test001', '7861db0d32bf4b59a8ce4e4f04a1a7a3', '完全二叉树', '请详细描述完全二叉树的定义，并说明其在数据结构中的重要特性。在完全二叉树中，若一个节点的索引为i（从1开始计数），那么其左孩子和右孩子分别位于什么位置？', '["完全二叉树除了最后一层外，其他层的节点数都达到了最大值。", "完全二叉树的特点是其节点存储在数组中，便于高效的访问和操作。", "左孩子的索引为2i，右孩子的索引为2i+1。"]', '完全二叉树就是一棵树，它最底层少了一些节点，而且满二叉树肯定是完全二叉树。', '未匹配到特定参考资料', 75, '["已覆盖的知识点1"]', '[{"point": "完全二叉树的定义错误", "suggestion": "完全二叉树的定义不完全正确，建议补充完全二叉树的严格定义"}, {"point": "关于节点索引i的位置的正确性", "suggestion": "未涉及节点索引i对应的左孩子和右孩子的正确位置，建议补充这部分内容"}]', '[{"flaw": "关于满二叉树和完全二叉树的关系描述错误", "suggestion": "应明确说明满二叉树是完全二叉树的特例"}]', '回答基本涵盖了完全二叉树的一些概念，但定义和部分特性不准确，补充定义和重要特性会更好。', 1, '2026-03-28 18:47:13', '2026-03-28 18:52:29');
+INSERT INTO study_backend.feynman_record (id, record_id, user_id, resource_id, knowledge_point, question_text, hints, user_answer, reference_context, score, covered_points, missing_points, logic_flaws, feedback, status, create_time, update_time) VALUES (8, 'c79ccd1cfee644e49f53f1d1672e22d4', 'test001', '7861db0d32bf4b59a8ce4e4f04a1a7a3', '完全二叉树的特点与定义', '根据PPT中的内容，完全二叉树的特点有哪些？特别是关于叶子节点和各层节点数量的描述。', '["完全二叉树是指除了最后一层外，其他各层的节点数都达到了最大值。", "叶子节点都集中在最后一层，并且是连续的."]', '完全二叉树就是在满二叉树的基础上，去掉几个底层的节点得到的。它的特点是，所有的叶子节点都必须在最下面那一层。', '未匹配到特定参考资料', 75, '["叶子节点必须在最下面一层"]', '[{"point": "其他层的节点都在最左边", "suggestion": "补充缺少的内容"}, {"point": "逻辑连接词", "suggestion": "补充逻辑连接词"}]', '[{"flaw": "逻辑断层：解释完全二叉树的定义时缺少必要的逻辑连接词如“进而”或“因此”，段落之间衔接松散", "suggestion": "补充逻辑连接词"}]', '回答基本正确但定义不够完整，缺少一些关键点', 1, '2026-03-28 19:08:04', '2026-03-28 19:12:41');
+INSERT INTO study_backend.feynman_record (id, record_id, user_id, resource_id, knowledge_point, question_text, hints, user_answer, reference_context, score, covered_points, missing_points, logic_flaws, feedback, status, create_time, update_time) VALUES (9, 'd4d6d63fe6b84b8097bf483b9d228499', 'test001', '76dac65b0cae469b8a573ed11ed30e8f', '完全二叉树的特点与定义', '请判断以下哪些结构是完全二叉树？（多选题）', '["完全二叉树的特点是什么？", "回忆完全二叉树的定义，观察左右子树的节点数目关系"]', null, null, 0, null, null, null, null, 0, '2026-03-28 19:14:33', '2026-03-28 19:14:33');
+INSERT INTO study_backend.feynman_record (id, record_id, user_id, resource_id, knowledge_point, question_text, hints, user_answer, reference_context, score, covered_points, missing_points, logic_flaws, feedback, status, create_time, update_time) VALUES (10, 'f7db638d38e9472ba4da703f561c5a6a', 'test001', '76dac65b0cae469b8a573ed11ed30e8f', '完全二叉树的特点与定义', '假设完全二叉树的高度为h，则其最多可以有多少个节点？然后，如果一个完全二叉树的最后一层有k个节点，那么它的最后一个非满节点是在哪个位置？', '["完全二叉树的高度指的是从根节点到最远的叶子节点的最长层数加一", "完全二叉树的结构决定了最后一层的非满节点和非叶子节点的位置", "高度h的完全二叉树最多可以有2^h - 1个节点", "可以通过计算2^(h-1) + k -1来得到最后一个非满节点的位置", "举一个具体的例子，当h=3时，计算最大节点数和非满节点数", "利用二叉树的层次结构和完全二叉树的定义来推导答案"]', null, null, 0, null, null, null, null, 0, '2026-03-28 19:14:37', '2026-03-28 19:14:37');
+INSERT INTO study_backend.feynman_record (id, record_id, user_id, resource_id, knowledge_point, question_text, hints, user_answer, reference_context, score, covered_points, missing_points, logic_flaws, feedback, status, create_time, update_time) VALUES (11, 'ab30bd1cd7dc4dabb8aeedc149972a6b', 'test001', 'c79ccd1cfee644e49f53f1d1672e22d4', '完全二叉树的特点与定义', '请描述完全二叉树的特点，并说明如何使用这些特点来判断一个给定的二叉树是否为完全二叉树。', '["完全二叉树是一个所有层，除了最后一层外，都是满的，并且最后一层的节点都集中在该层的左边。", "要判断一个二叉树是否为完全二叉树，可以按照完全二叉树的定义来检查，通常可以将二叉树按层次顺序存储，并根据节点的位置关系来确定其是否为完全二叉树。"]', null, null, 0, null, null, null, null, 0, '2026-03-28 19:15:41', '2026-03-28 19:15:41');
+INSERT INTO study_backend.feynman_record (id, record_id, user_id, resource_id, knowledge_point, question_text, hints, user_answer, reference_context, score, covered_points, missing_points, logic_flaws, feedback, status, create_time, update_time) VALUES (12, '3dd676a6752343aa9acfc49fdc93ca7f', 'test001', '76dac65b0cae469b8a573ed11ed30e8f', '完全二叉树的特点与定义', '根据test.pdf中的知识，描述完全二叉树的定义，并指出其结构特点。在不同层级及其节点数排列方面有哪些具体要求？', '["回忆完全二叉树的定义，所有层次，除了最后一层外，前面的层次都填满，且最后一层的所有节点都尽可能排列在左边", "考虑如何将这些知识点与具体结构或示例相关联"]', '完全二叉树就是一棵满二叉树在最底层从左到右去掉几个节点得到的树。它的结构特点是除了最后一层其他层都是满的，而且所有的叶子节点都必须长在最下面那一层。', '[摘自《test.pdf》 第 4 页]：
+2) Break----------------
+4Boyu.AI
+二叉树的定义
+完全二叉树
+在满二叉树的最底层自右至左依次     (注意：不能跳过
+任何一个结点  )去掉若干个结点得到的二叉树也被称
+之为完全二叉树  。 满二叉树一定是完全二叉树    ， 但
+完全二叉树不一定是满二叉树    。
+特点：
+ （1）所有的叶结点都出现在最低的两层上     。
+ （ 2）对任一结点，如果其右子树的高度为     k，
+则其左子树的高度为   k或 k＋ 1。
+D
+C
+GE              F
+B
+A
+K                             OL              NM
+D
+C
+GE            F
+B
+A
+H     I      J
+完全二叉树
+不是完全二叉树
+
+[摘自《test.pdf》 第 4 页]：
+2) Break----------------
+4Boyu.AI
+二叉树的定义
+完全二叉树
+在满二叉树的最底层自右至左依次     (注意：不能跳过
+任何一个结点  )去掉若干个结点得到的二叉树也被称
+之为完全二叉树  。 满二叉树一定是完全二叉树    ， 但
+完全二叉树不一定是满二叉树    。
+特点：
+ （1）所有的叶结点都出现在最低的两层上     。
+ （ 2）对任一结点，如果其右子树的高度为     k，
+则其左子树的高度为   k或 k＋ 1。
+D
+C
+GE              F
+B
+A
+K                             OL              NM
+D
+C
+GE            F
+B
+A
+H     I      J
+完全二叉树
+不是完全二叉树
+
+[摘自《test.pdf》 第 4 页]：
+2) Break----------------
+4Boyu.AI
+二叉树的定义
+完全二叉树
+在满二叉树的最底层自右至左依次     (注意：不能跳过
+任何一个结点  )去掉若干个结点得到的二叉树也被称
+之为完全二叉树  。 满二叉树一定是完全二叉树    ， 但
+完全二叉树不一定是满二叉树    。
+特点：
+ （1）所有的叶结点都出现在最低的两层上     。
+ （ 2）对任一结点，如果其右子树的高度为     k，
+则其左子树的高度为   k或 k＋ 1。
+D
+C
+GE              F
+B
+A
+K                             OL              NM
+D
+C
+GE            F
+B
+A
+H     I      J
+完全二叉树
+不是完全二叉树', 75, '["完全二叉树的定义", "结构特点"]', '[]', '[]', '据资料，完全二叉树的结构特点是除了最后一层其他层都是满的，且所有的叶结点都必须长在最下一层。(参考课件第4页)', 1, '2026-03-28 19:19:21', '2026-03-28 19:24:48');
+
+
 -- 导出  表 study_backend.material_chunk 结构
 DROP TABLE IF EXISTS `material_chunk`;
 CREATE TABLE IF NOT EXISTS `material_chunk` (
